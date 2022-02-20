@@ -1,0 +1,49 @@
+---
+
+apiVersion: 'apps/v1'
+kind: 'Deployment'
+metadata:
+  name: 'filebrowser'
+  labels:
+    app: 'filebrowser'
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: 'filebrowser'
+  template:
+    metadata:
+      labels:
+        app: 'filebrowser'
+    spec:
+      containers:
+        - name: 'filebrowser'
+          image: 'filebrowser/filebrowser'
+          imagePullPolicy: 'Always'
+          # command: ['/filebrowser']
+          # args: ['-c', '/config/filebrowser.json']
+          ports:
+            - containerPort: 80
+              protocol: 'TCP'
+          volumeMounts:
+            - mountPath: '/config'
+              name: 'filebrowser-config'
+      volumes:
+        - name: 'filebrowser-config'
+          emptyDir: {}
+
+---
+
+apiVersion: 'v1'
+kind: 'Service'
+metadata:
+  name: 'filebrowser'
+  labels:
+    app: 'filebrowser'
+spec:
+  ports:
+    - port: 80
+      protocol: 'TCP'
+      targetPort: 80
+  selector:
+    app: 'filebrowser'
