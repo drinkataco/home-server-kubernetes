@@ -1,0 +1,6 @@
+kustomization.yaml
+
+# Kustomization Patches
+!patches/
+patches/*
+!patches/example/
