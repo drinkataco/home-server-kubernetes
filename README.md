@@ -1,5 +1,7 @@
 # Home Assistant Kubernetes Cluster
 
+![Architecture Diagram](./assets/home-server-kubernetes.png "Kubernetes Deployment")
+
 This repository contains a kubernetes cluster starter for a homeserver, and includes traefik ingress controllers for public and local access.
 
 Included as default are the following containers:
