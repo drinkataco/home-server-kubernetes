@@ -20,16 +20,14 @@ spec:
         - name: 'filebrowser'
           image: 'filebrowser/filebrowser'
           imagePullPolicy: 'Always'
-          # command: ['/filebrowser']
-          # args: ['-c', '/config/filebrowser.json']
           ports:
             - containerPort: 80
               protocol: 'TCP'
           volumeMounts:
-            - mountPath: '/config'
-              name: 'filebrowser-config'
+            - mountPath: '/srv'
+              name: 'filebrowser-srv'
       volumes:
-        - name: 'filebrowser-config'
+        - name: 'filebrowser-srv'
           emptyDir: {}
 
 ---

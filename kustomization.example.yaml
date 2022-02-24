@@ -5,19 +5,18 @@ kind: 'Kustomization'
 
 resources:
   # Kubernetes Dashboard
-  - 'https://raw.githubusercontent.com/kubernetes/dashboard/v2.5.0/aio/deploy/recommended.yaml'
-  - 'users/admin.yaml'
+  - 'config/users/admin.yaml'
 
   # Containers
-  - 'deployments/homeassistant.yaml'
-  - 'deployments/filebrowser.yaml'
+  - 'config/deployments/homeassistant.yaml'
+  - 'config/deployments/filebrowser.yaml'
 
   # Traefik
-  - 'ingress/middleware.yaml'
-  - 'ingress/local.yaml'
-  # - 'ingress/public.yaml'
+  - 'config/ingress/middleware.yaml'
+  - 'config/ingress/local.yaml'
+  # - 'config/ingressss/public.yaml'
 
 
 # patchesStrategicMerge:
-  # - 'patches/volumes.yaml'
+  # - 'custom/volumes.yaml'
 
