@@ -4,3 +4,4 @@ kustomization.yaml
 !custom/
 custom/*
 !custom/examples/
+coc-settings.json
