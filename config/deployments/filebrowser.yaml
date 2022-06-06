@@ -30,7 +30,7 @@ spec:
             httpGet:
               port: 80
               path: '/health'
-            failureThreshold: 3  
+            failureThreshold: 3
             initialDelaySeconds: 30
             periodSeconds: 10
             terminationGracePeriodSeconds: 60

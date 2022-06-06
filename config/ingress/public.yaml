@@ -16,12 +16,24 @@ spec:
       - name: 'filebrowser'
         port: 80
 
-# apiVersion: 'networking.k8s.io/v1'
-# kind: 'Ingress'
-# metadata:
-  # name: 'filebrowser-public-http'
-  # annotations:
-    # traefik.ingress.kubernetes.io/router.middlewares: default-redirect-https@kubernetescrd
+---
+
+apiVersion: 'traefik.containo.us/v1alpha1'
+kind: 'IngressRoute'
+metadata:
+  name: 'homeassistant-ingress'
+  annotations:
+    kubernetes.io/ingress.class: 'traefik'
+spec:
+  entryPoints:
+    - 'web'
+  routes:
+    - kind: 'Rule'
+      match: Host(`homeassistant`)
+      services:
+      - name: 'homeassistant'
+        port: 8123
+
 # spec:
   # rules:
     # - host: 'f.shw.al'

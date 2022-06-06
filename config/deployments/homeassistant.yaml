@@ -30,7 +30,7 @@ spec:
             httpGet:
               port: 8123
               path: '/'
-            failureThreshold: 3  
+            failureThreshold: 3
             initialDelaySeconds: 30
             periodSeconds: 10
             terminationGracePeriodSeconds: 30
