@@ -5,18 +5,16 @@ kind: 'Kustomization'
 
 resources:
   # Kubernetes Dashboard
-  - 'config/users/admin.yaml'
+  - 'config/user.admin.yaml'
 
   # Containers
-  - 'config/deployments/homeassistant.yaml'
-  - 'config/deployments/filebrowser.yaml'
+  - 'config/deployment.homeassistant.yaml'
+  - 'config/deployment.filebrowser.yaml'
 
   # Traefik
-  - 'config/ingress/middleware.yaml'
-  - 'config/ingress/local.yaml'
-  # - 'config/ingressss/public.yaml'
+  - 'config/ingress.yaml'
 
-
+# Here we can add custom configuration such as as pod volumes, ingress dns names, and ingress tls
 # patchesStrategicMerge:
-  # - 'custom/volumes.yaml'
+  # - 'custom/patches/deployment.volumes.yaml'
 

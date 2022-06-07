@@ -1,0 +1,36 @@
+---
+
+apiVersion: 'traefik.containo.us/v1alpha1'
+kind: 'IngressRoute'
+metadata:
+  name: 'filebrowser-ingress'
+  annotations:
+    kubernetes.io/ingress.class: 'traefik'
+spec:
+  entryPoints:
+    - 'web'
+  routes:
+    - kind: 'Rule'
+      match: Host(`filebrowser`)
+      services:
+        - name: 'filebrowser'
+          port: 80
+
+---
+
+apiVersion: 'traefik.containo.us/v1alpha1'
+kind: 'IngressRoute'
+metadata:
+  name: 'homeassistant-ingress'
+  annotations:
+    kubernetes.io/ingress.class: 'traefik'
+spec:
+  entryPoints:
+    - 'web'
+  routes:
+    - kind: 'Rule'
+      match: Host(`homeassistant`)
+      services:
+        - name: 'homeassistant'
+          port: 8123
+
