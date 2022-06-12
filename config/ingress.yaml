@@ -34,3 +34,25 @@ spec:
         - name: 'homeassistant'
           port: 8123
 
+---
+
+apiVersion: 'traefik.containo.us/v1alpha1'
+kind: 'IngressRoute'
+metadata:
+  name: 'avalanche-ingress'
+  annotations:
+    kubernetes.io/ingress.class: 'traefik'
+spec:
+  entryPoints:
+    - 'web'
+  routes:
+    - kind: 'Rule'
+      match: Host(`ava`)
+      services:
+        - name: 'flame'
+          port: 5005
+    - kind: 'Rule'
+      match: Host(`ava`) && PathPrefix(`/transmission`)
+      services:
+        - name: 'transmission'
+          port: 9091
