@@ -66,9 +66,9 @@ spec:
       port: 51413
       protocol: 'TCP'
       targetPort: 51413
-    - name: 'transmission-udp'
-      port: 51413
-      protocol: 'UDP'
-      targetPort: 51413
+    # - name: 'transmission-udp'
+      # port: 51413
+      # protocol: 'UDP'
+      # targetPort: 51413
   selector:
     app: 'transmission'
