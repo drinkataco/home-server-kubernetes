@@ -3,12 +3,12 @@ BASE_DIR=$(cd -- "$(dirname -- "$(readlink "$0" || echo "$0")")" && cd .. && pwd
 DATA_DIR="${BASE_DIR}/data"
 
 declare -r BASE_DIR
-declare -r DATA_DKIR
+declare -r DATA_DIR
 
 #########################################
 # Get container ID from name
 # Arguments:
-#   1 - Generic name of container which the ID will be prepended with 
+#   1 - Generic name of container which the ID will be prepended with
 # Returns
 #   ID of  container
 #######################################
@@ -38,10 +38,10 @@ function copy_files() {
   for path in "${data_path}"/*; do
     local container_path=${path/${dir}//}
 
-    echo "Copying ${container_path} to ${container_id}"
+    echo "...copying ${container_path} to ${container_id}"
 
-    # If the path isn't a file, then we need to ensure it's empty before we copy it over
-    # otherwise, we're going to step into the directory (recursively calling this function)
+    # If the path isn't a file, then we need to ensure the directory is empty before we copy it over
+    #   otherwise, we'll step into the directory and perform operations there, recursively
     if [[ ! -f "${path}" ]]; then
       if kubectl exec "${container_id}" -- ls "${container_path}" > /dev/null 2>&1; then
         copy_files "${container_id}" "${path}" "${dir}"
@@ -49,16 +49,18 @@ function copy_files() {
       fi
     fi
 
-    kubectl cp "${path}" "${container_id}:${container_path}"
+    echo kubectl cp "${path}" "${container_id}:${container_path}"
   done 
 }
 
 #########################################
-# Main function
+# Loop through each container subdirectory and copy files onto container
 # Globals:
 #   DATA_DIR
 #########################################
 function main() {
+  echo -e "\033[0;32mCopying Default Container Config\033[0m"
+
   for data_path in "${DATA_DIR}"/*; do
     local container_name
     local container_id
@@ -66,16 +68,19 @@ function main() {
     container_name=${data_path##*/}
     container_id=$(get_container "${container_name}")
 
-    echo -e "\033[0;32mBootstrapping Container: ${container_name}\033[0m"
+    if [[ -z "${container_id}" ]]; then
+      echo -e "\033[0;31mError searching for ${container_name} pod!\033[0m" >&2
+      continue
+    fi
+
+    echo -e "\033[0;34mCopying files for container: ${container_name}\033[0m"
     copy_files "${container_id}" "${data_path}" "${DATA_DIR}/${container_name}/" 
 
     kubectl exec "${container_id}" -- reboot
-
-    echo
   done
 
-  echo -e "\033[0;32mBootstrapping Complete!\033[0m"
+  echo -e "\033[0;32mCopying Complete\033[0m"
 }
 
-main
+main "$@"
 
