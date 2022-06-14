@@ -21,15 +21,19 @@ By default your application will be deployment on three hosts:
 
 * `homeassistant` - this will be the homeassistant installation
 * `filebrowser` - the will be filebrowser installation
-* `avalanche` -
+* `waffle` - main ingress route for applications. [Flame](https://github.com/pawelmalak/flame) is used on the root directory, and subdirectories can run other applications - for example, waffle/transmission for [transmission](https://github.com/linuxserver/docker-transmission)
 
 Add `your_cluster_ip homeassistant filebrowser avalanche` to your /etc/hosts file, or alternatively if your router supports dnsmaqs `address=/crepe/filebrowser/homeassistant/your_cluster_ip`, to then access these services by hostname (where `your_cluster_ip` is the IP address of your kubernetes cluster)
 
 Navigate to `http://filebrowser` in your web browser to now test the connection to filebrowser.
 
-<!-- When trying to access home assistant for the first time you will receive a 400 Bad Request Response. This is because, [by default](https://www.home-assistant.io/integrations/http/) home assistant blocks access via proxies, so we'll need to modify the configuration.yaml to allow access to it. We can do this automatically by running the `sh ./scripts/enable_hass_ingress.sh` -->
-
 ## Advanced Usage
+
+This repository is made to be extended and patched. All custom resources and patches should go in the [/custom](./custom) directory.
+
+Examples of these resources are in the [/custom/examples](./custom/examples) directory, and should be copied and modified if to be used. Patches should be configured accordingly, and go under `patchesStrategicMerge` in your kustomization.yaml file.
+
+Some examples of using these patches:
 
 ### Setting up persistent storage for your pods
 
@@ -43,6 +47,8 @@ Read more about [kubernetes volume storage](https://kubernetes.io/docs/concepts/
 
 To set up public access (over the internet) you can add a patch to change the hostnames, and add a custom resource to set up a letsencrypt certificate.
 
-More info to come
+You can use the [ingress patch](./custom/examples/ingress.public-patch.yaml) to change a hostname and add TLS. The [certification resource](./custom/examples/ingress.certificate.yaml) can be used to provision a certificate with [cert-manager](https://cert-manager.io/).
+
+The [auth middleware](./custom/examples/middleware-auth.yaml) can be used to set up basic auth for your route(s).
 
 

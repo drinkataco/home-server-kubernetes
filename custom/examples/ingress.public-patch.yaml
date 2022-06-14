@@ -1,0 +1,17 @@
+---
+
+apiVersion: 'traefik.containo.us/v1alpha1'
+kind: 'IngressRoute'
+metadata:
+  name: 'filebrowser-ingress'
+spec:
+  entryPoints:
+    - 'websecure'
+  routes:
+    - kind: 'Rule'
+      match: Host(`filebrowser`)
+      services:
+        - name: 'filebrowser'
+          port: 80
+  tls:
+    secretName: 'filebrowser-tls-secret'
