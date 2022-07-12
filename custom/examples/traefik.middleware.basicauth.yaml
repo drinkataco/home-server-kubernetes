@@ -1,0 +1,21 @@
+---
+
+apiVersion: 'v1'
+kind: 'Secret'
+metadata:
+  name: 'ingress-basic-auth'
+data:
+  # This is the htpasswd entry encoded in to base64.
+  # This string decodes to user:abc
+  # Use the command `htpasswd -nb username password | openssl base64` to generate your own!
+  users: 'dXNlcjokYXByMSRTS2owRmlRTSQzTkRIN2MueTBOdlNPeDdqYlBGdUMwCgo='
+
+---
+
+apiVersion: 'traefik.containo.us/v1alpha1'
+kind: 'Middleware'
+metadata:
+  name: 'ingress-basic-auth'
+spec:
+  basicAuth:
+    secret: 'ingress-basic-auth'

@@ -10,11 +10,14 @@ resources:
   # Containers
   - 'config/deployment.homeassistant.yaml'
   - 'config/deployment.filebrowser.yaml'
+  - 'config/deployment.flame.yaml'
+  - 'config/deployment.transmission.yaml'
 
   # Traefik
   - 'config/ingress.yaml'
 
 # Here we can add custom configuration such as as pod volumes, ingress dns names, and ingress tls
 # patchesStrategicMerge:
-  # - 'custom/patches/deployment.volumes.yaml'
+  # - 'custom/patches/deployment.homeassistant.yaml'
+  # - 'custom/patches/ingress.yaml'
 
