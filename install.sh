@@ -18,7 +18,8 @@ function usage() {
   Arguments:
     --cert-manager - Install cert-manager (https://cert-manager.io/) to manage certificates as resources in kubernetes
     --traefik - Install traefik. Your installation must have traefik for the ingress resources.  Some distributions, such as k3s, ship with traefik by default.
-    --initialise - Initialise Containers by copying over default config"
+    --initialise - Initialise Containers by copying over default config and then deleting the pod for a correct restart. Without persistent volumes set up this will do nothing.
+    --soft-initialise - like initialise, but only attempts to reboot containers so that persistent volumes are not needed. However, some containers (such as flame) cannot be rebooted."
   exit 0
 }
 #########################################
@@ -127,9 +128,14 @@ function copy_files() {
 #   NC
 #########################################
 function copy_default_data() {
+  local soft_init=$1
   echo -e "${GREEN}Copying Default Container Config${NC}"
 
   for data_path in "${DATA_DIR}"/*; do
+    if [[ "$container_name" == 'flame' ]]; then
+      echo 'skip flame'
+      continue
+    fi
     local container_name
     local container_id
 
@@ -144,7 +150,11 @@ function copy_default_data() {
     echo -e "\033[0;34mCopying files for container: ${container_name}\033[0m"
     copy_files "${container_id}" "${data_path}" "${DATA_DIR}/${container_name}/" 
 
-    echo kubectl exec "${container_id}" -- reboot
+    if [[ -n "$soft_init" ]]; then
+      kubectl exec "${container_id}" -- reboot
+    else
+      kubectl delete pod "${container_id}"
+    fi
   done
 
   echo -e "\033[0;32mCopying Complete\033[0m"
@@ -176,7 +186,9 @@ function main() {
 
   apply_k8s
 
-  if [[ "$*" == *'--initialise'* ]]; then
+  if [[ "$*" == *'--soft-initialise'* ]]; then
+    copy_default_data 1
+  elif [[ "$*" == *'--initialise'* ]]; then
     copy_default_data
   fi
 
