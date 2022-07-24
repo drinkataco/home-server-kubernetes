@@ -9,7 +9,7 @@ spec:
     - 'websecure'
   routes:
     - kind: 'Rule'
-      match: Host(`filebrowser`)
+      match: Host(`filebrowser.example.org`)
       services:
         - name: 'filebrowser'
           port: 80
