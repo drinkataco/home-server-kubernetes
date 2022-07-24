@@ -32,14 +32,14 @@ spec:
               name: 'transmission-config'
             - mountPath: '/downloads'
               name: 'transmission-downloads'
-          # livenessProbe:
-            # httpGet:
-              # port: 5005
-              # path: '/'
-            # failureThreshold: 3
-            # initialDelaySeconds: 30
-            # periodSeconds: 10
-            # terminationGracePeriodSeconds: 30
+          livenessProbe:
+            httpGet:
+              port: 9091
+              path: '/'
+            failureThreshold: 3
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            terminationGracePeriodSeconds: 30
       volumes:
         - name: 'transmission-config'
           emptyDir: {}
