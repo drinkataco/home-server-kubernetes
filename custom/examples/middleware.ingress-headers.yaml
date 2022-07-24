@@ -1,0 +1,12 @@
+---
+
+apiVersion: 'traefik.containo.us/v1alpha1'
+kind: 'Middleware'
+metadata:
+  name: 'ingress-secure-headers'
+spec:
+  headers:
+    browserXssFilter: true
+    contentTypeNosniff: true
+    frameDeny: true
+    stsSeconds: 31536
