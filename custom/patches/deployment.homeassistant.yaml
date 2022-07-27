@@ -1,0 +1,16 @@
+---
+
+apiVersion: 'apps/v1'
+kind: 'Deployment'
+metadata:
+  name: 'homeassistant'
+spec:
+  template:
+    spec:
+      volumes:
+        - name: 'homeassistant-config'
+          nfs:
+            server: '3bp-waits'
+            path: '/srv/config/homeassistant'
+          emptyDir:
+

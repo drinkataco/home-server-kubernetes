@@ -1,7 +1,1 @@
-kustomization.yaml
-
-# Kustomization Patches
-!custom/
-custom/*
-!custom/examples/
 coc-settings.json

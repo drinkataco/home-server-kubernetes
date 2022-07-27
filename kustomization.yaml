@@ -1,0 +1,35 @@
+---
+
+apiVersion: 'kustomize.config.k8s.io/v1beta1'
+kind: 'Kustomization'
+
+resources:
+  # Kubernetes Dashboard User
+  - 'config/user.admin.yaml'
+
+  # Containers
+  - 'config/deployment.homeassistant.yaml'
+  - 'config/deployment.filebrowser.yaml'
+  - 'config/deployment.flame.yaml'
+  - 'config/deployment.transmission.yaml'
+  # - 'custom/deployment.jackett.yaml'
+  # - 'custom/deployment.sonarr.yaml'
+  # - 'custom/deployment.radarr.yaml'
+
+  # Ingress
+  - 'config/ingress.yaml'
+
+  - 'custom/middleware.ingress-basicauth.yaml'
+  - 'custom/examples/middleware.ingress-headers.yaml'
+  - 'custom/ingress.certs.yaml'
+
+  # misc custom
+  - 'custom/deployment.whoami.yaml'
+
+patchesStrategicMerge:
+  - 'custom/patches/deployment.homeassistant.yaml'
+  - 'custom/patches/deployment.filebrowser.yaml'
+  - 'custom/patches/deployment.flame.yaml'
+  - 'custom/patches/deployment.transmission.yaml'
+  - 'custom/patches/ingress.yaml'
+

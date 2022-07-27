@@ -1,0 +1,98 @@
+---
+
+apiVersion: 'traefik.containo.us/v1alpha1'
+kind: 'IngressRoute'
+metadata:
+  name: 'filebrowser-ingress'
+spec:
+  entryPoints:
+    - 'websecure'
+  routes:
+    - kind: 'Rule'
+      match: Host(`f.shw.al`)
+      services:
+        - name: 'filebrowser'
+          port: 80
+      middlewares:
+        - name: 'ingress-secure-headers'
+  tls:
+    secretName: 'filebrowser-tls-secret'
+
+---
+
+apiVersion: 'traefik.containo.us/v1alpha1'
+kind: 'IngressRoute'
+metadata:
+  name: 'homeassistant-ingress'
+spec:
+  entryPoints:
+    - 'websecure'
+  routes:
+    - kind: 'Rule'
+      match: Host(`h.shw.al`)
+      services:
+        - name: 'homeassistant'
+          port: 8123
+      middlewares:
+        - name: 'ingress-secure-headers'
+  tls:
+    secretName: 'homeassistant-tls-secret'
+
+---
+
+apiVersion: 'traefik.containo.us/v1alpha1'
+kind: 'IngressRoute'
+metadata:
+  name: 'waffle-ingress'
+spec:
+  entryPoints:
+    - 'websecure'
+  routes:
+    - kind: 'Rule'
+      match: Host(`z.shw.al`)
+      priority: 20
+      services:
+        - name: 'flame'
+          port: 5005
+      middlewares:
+        - name: 'ingress-secure-headers'
+        - name: 'ingress-basic-auth'
+    - kind: 'Rule'
+      match: Host(`z.shw.al`) && PathPrefix(`/transmission`)
+      services:
+        - name: 'transmission'
+          port: 9091
+      middlewares:
+        - name: 'ingress-secure-headers'
+        - name: 'ingress-basic-auth'
+    # - kind: 'Rule'
+      # match: Host(`z.shw.al`) && PathPrefix('/jackett')
+      # services:
+        # - name: 'jackett'
+          # port: 9117
+      # middlewares:
+        # - name: 'ingress-secure-headers'
+        # - name: 'ingress-basic-auth'
+    # - kind: 'Rule'
+      # match: Host(`z.shw.al`) && PathPrefix('/sonarr')
+      # services:
+        # - name: 'sonarr'
+          # port: 8989
+      # middlewares:
+        # - name: 'ingress-secure-headers'
+        # - name: 'ingress-basic-auth'
+    # - kind: 'Rule'
+      # match: Host(`z.shw.al`) && PathPrefix('/radarr')
+      # services:
+        # - name: 'radarr'
+          # port: 7878
+      # middlewares:
+        # - name: 'ingress-secure-headers'
+        # - name: 'ingress-basic-auth'
+    - kind: 'Rule'
+      match: Host(`z.shw.al`) && PathPrefix(`/whoami`)
+      services:
+        - name: 'whoami'
+          port: 80
+  tls:
+    secretName: 'waffle-tls-secret'
