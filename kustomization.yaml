@@ -5,16 +5,20 @@ kind: 'Kustomization'
 
 resources:
   # Kubernetes Dashboard User
-  - 'config/user.admin.yaml'
+  # - 'config/user.admin.yaml'
 
   # Containers
-  - 'config/deployment.homeassistant.yaml'
+  # - 'config/deployment.homeassistant.yaml'
   - 'config/deployment.filebrowser.yaml'
   - 'config/deployment.flame.yaml'
   - 'config/deployment.transmission.yaml'
-  # - 'custom/deployment.jackett.yaml'
-  # - 'custom/deployment.sonarr.yaml'
-  # - 'custom/deployment.radarr.yaml'
+  - 'custom/deployment.jackett.yaml'
+  - 'custom/deployment.sonarr.yaml'
+  - 'custom/deployment.radarr.yaml'
+  # A taste of things to come \/
+  # - 'custom/deployment.mysql.yaml' # for kodi
+  # - 'custom/deployment.jellyfin.yaml'
+  # - 'custom/deployment.snapcast.yaml'
 
   # Ingress
   - 'config/ingress.yaml'
@@ -27,7 +31,7 @@ resources:
   - 'custom/deployment.whoami.yaml'
 
 patchesStrategicMerge:
-  - 'custom/patches/deployment.homeassistant.yaml'
+  # - 'custom/patches/deployment.homeassistant.yaml'
   - 'custom/patches/deployment.filebrowser.yaml'
   - 'custom/patches/deployment.flame.yaml'
   - 'custom/patches/deployment.transmission.yaml'

@@ -65,30 +65,42 @@ spec:
       middlewares:
         - name: 'ingress-secure-headers'
         - name: 'ingress-basic-auth'
+    - kind: 'Rule'
+      match: Host(`z.shw.al`) && PathPrefix(`/jackett/`)
+      services:
+        - name: 'jackett'
+          port: 9117
+      middlewares:
+        - name: 'ingress-secure-headers'
+        - name: 'ingress-basic-auth'
+    - kind: 'Rule'
+      match: Host(`z.shw.al`) && PathPrefix(`/sonarr`)
+      services:
+        - name: 'sonarr'
+          port: 8989
+      middlewares:
+        - name: 'ingress-secure-headers'
+        - name: 'ingress-basic-auth'
+    - kind: 'Rule'
+      match: Host(`z.shw.al`) && PathPrefix(`/radarr`)
+      services:
+        - name: 'radarr'
+          port: 7878
+      middlewares:
+        - name: 'ingress-secure-headers'
+        - name: 'ingress-basic-auth'
     # - kind: 'Rule'
-      # match: Host(`z.shw.al`) && PathPrefix('/jackett')
+      # match: Host(`z.shw.al`) && PathPrefix(`/kubernetes-dashboard`)
       # services:
-        # - name: 'jackett'
-          # port: 9117
-      # middlewares:
-        # - name: 'ingress-secure-headers'
-        # - name: 'ingress-basic-auth'
+        # - name: 'kubernetes-dashboard'
+          # namespace: 'kubernetes-dashboard'
+          # port: 8001
     # - kind: 'Rule'
-      # match: Host(`z.shw.al`) && PathPrefix('/sonarr')
+      # match: Host(`z.shw.al`) && PathPrefix(`/dashboard-traefik`)
       # services:
-        # - name: 'sonarr'
-          # port: 8989
-      # middlewares:
-        # - name: 'ingress-secure-headers'
-        # - name: 'ingress-basic-auth'
-    # - kind: 'Rule'
-      # match: Host(`z.shw.al`) && PathPrefix('/radarr')
-      # services:
-        # - name: 'radarr'
-          # port: 7878
-      # middlewares:
-        # - name: 'ingress-secure-headers'
-        # - name: 'ingress-basic-auth'
+        # - name: 'traefik-dashboard'
+          # namespace: 'traefik-dashboard'
+          # port: 9009
     - kind: 'Rule'
       match: Host(`z.shw.al`) && PathPrefix(`/whoami`)
       services:
