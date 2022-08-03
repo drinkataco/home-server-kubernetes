@@ -32,7 +32,7 @@ spec:
         protocol: 'TCP'
         exposePort: 80
         # Enable to always redirect to https
-        # redirectTo: websecure
+        redirectTo: websecure
       websecure:
         port: 443
         expose: true
