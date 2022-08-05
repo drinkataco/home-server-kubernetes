@@ -89,22 +89,39 @@ spec:
       middlewares:
         - name: 'ingress-secure-headers'
         - name: 'ingress-basic-auth'
-    # - kind: 'Rule'
-      # match: Host(`z.shw.al`) && PathPrefix(`/kubernetes-dashboard`)
-      # services:
-        # - name: 'kubernetes-dashboard'
-          # namespace: 'kubernetes-dashboard'
-          # port: 8001
+    - kind: 'Rule'
+      match: Host(`z.shw.al`) && PathPrefix(`/whoami`)
+      services:
+        - name: 'whoami'
+          port: 80
+    #
+    # INTERNAL : Traefik Dashboard
+    #
+    - match: Host(`z.shw.al`) && PathPrefix(`/traefik`)
+      kind: 'Rule'
+      services:
+        - name: 'api@internal'
+          kind: 'TraefikService'
+      middlewares:
+        - name: 'traefik-path'
+        - name: 'ingress-secure-headers'
+        - name: 'ingress-basic-auth'
+    - match: PathPrefix(`/api`) && HeadersRegexp(`Referer`, `.*/traefik/.*`)
+      kind: 'Rule'
+      services:
+        - name: 'api@internal'
+          kind: 'TraefikService'
+      middlewares:
+        - name: 'ingress-secure-headers'
+        - name: 'ingress-basic-auth'
+    #
+    # INTERNAL : Kubernetes Dashboard
+    #
     # - kind: 'Rule'
       # match: Host(`z.shw.al`) && PathPrefix(`/dashboard-traefik`)
       # services:
         # - name: 'traefik-dashboard'
           # namespace: 'traefik-dashboard'
           # port: 9009
-    - kind: 'Rule'
-      match: Host(`z.shw.al`) && PathPrefix(`/whoami`)
-      services:
-        - name: 'whoami'
-          port: 80
   tls:
     secretName: 'waffle-tls-secret'

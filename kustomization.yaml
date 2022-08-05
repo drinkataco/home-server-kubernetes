@@ -15,14 +15,12 @@ resources:
   - 'custom/deployment.jackett.yaml'
   - 'custom/deployment.sonarr.yaml'
   - 'custom/deployment.radarr.yaml'
-  # A taste of things to come \/
   # - 'custom/deployment.mysql.yaml' # for kodi
-  # - 'custom/deployment.jellyfin.yaml'
-  # - 'custom/deployment.snapcast.yaml'
 
   # Ingress
   - 'config/ingress.yaml'
 
+  - 'custom/middleware.traefik-dashboard-path.yaml'
   - 'custom/middleware.ingress-basicauth.yaml'
   - 'custom/examples/middleware.ingress-headers.yaml'
   - 'custom/ingress.certs.yaml'
