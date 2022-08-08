@@ -58,7 +58,7 @@ spec:
         - name: 'ingress-secure-headers'
         - name: 'ingress-basic-auth'
     - kind: 'Rule'
-      match: Host(`z.shw.al`) && PathPrefix(`/transmission`)
+      match: Host(`z.shw.al`) && PathPrefix(`/transmission/`)
       services:
         - name: 'transmission'
           port: 9091
@@ -74,7 +74,7 @@ spec:
         - name: 'ingress-secure-headers'
         - name: 'ingress-basic-auth'
     - kind: 'Rule'
-      match: Host(`z.shw.al`) && PathPrefix(`/sonarr`)
+      match: Host(`z.shw.al`) && PathPrefix(`/sonarr/`)
       services:
         - name: 'sonarr'
           port: 8989
@@ -82,7 +82,7 @@ spec:
         - name: 'ingress-secure-headers'
         - name: 'ingress-basic-auth'
     - kind: 'Rule'
-      match: Host(`z.shw.al`) && PathPrefix(`/radarr`)
+      match: Host(`z.shw.al`) && PathPrefix(`/radarr/`)
       services:
         - name: 'radarr'
           port: 7878
@@ -97,7 +97,7 @@ spec:
     #
     # INTERNAL : Traefik Dashboard
     #
-    - match: Host(`z.shw.al`) && PathPrefix(`/traefik`)
+    - match: Host(`z.shw.al`) && PathPrefix(`/traefik/`)
       kind: 'Rule'
       services:
         - name: 'api@internal'
