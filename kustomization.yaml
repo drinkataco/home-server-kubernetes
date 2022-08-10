@@ -5,7 +5,7 @@ kind: 'Kustomization'
 
 resources:
   # Kubernetes Dashboard User
-  # - 'config/user.admin.yaml'
+  - 'config/user.admin.yaml'
 
   # Containers
   # - 'config/deployment.homeassistant.yaml'

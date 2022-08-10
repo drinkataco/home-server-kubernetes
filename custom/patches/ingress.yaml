@@ -114,14 +114,5 @@ spec:
       middlewares:
         - name: 'ingress-secure-headers'
         - name: 'ingress-basic-auth'
-    #
-    # INTERNAL : Kubernetes Dashboard
-    #
-    # - kind: 'Rule'
-      # match: Host(`z.shw.al`) && PathPrefix(`/dashboard-traefik`)
-      # services:
-        # - name: 'traefik-dashboard'
-          # namespace: 'traefik-dashboard'
-          # port: 9009
   tls:
     secretName: 'waffle-tls-secret'
