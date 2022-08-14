@@ -149,10 +149,6 @@ function copy_default_data() {
   echo -e "${GREEN}Copying Default Container Config${NC}"
 
   for data_path in "${DATA_DIR}"/*; do
-    if [[ "$container_name" == 'flame' ]]; then
-      echo 'skip flame'
-      continue
-    fi
     local container_name
     local container_id
 
