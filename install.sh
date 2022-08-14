@@ -48,7 +48,7 @@ function install_cert_manager() {
 function install_k8s_dashboard() {
   echo -e "${GREEN}Installing Kubernetes Dashboard${NC}"
   kubectl apply -f \
-    "kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/${KUBERNETES_DASHBOARD_VERSION}/aio/deploy/recommended.yaml"
+    "https://raw.githubusercontent.com/kubernetes/dashboard/${KUBERNETES_DASHBOARD_VERSION}/aio/deploy/recommended.yaml"
 }
 
 #########################################
