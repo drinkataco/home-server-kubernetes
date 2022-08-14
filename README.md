@@ -17,6 +17,14 @@ To deploy your cluster simply run copy `./kustomization.example.yaml` to `kustom
 
 To install dependencies, boostrap, and deploy have a look at the `./install.sh --help` script!
 
+To install all dependencies, we could run something similar to:
+```bash
+./install.sh \
+  --cert-manager \
+  --traefik \
+  --k8s-dashboard
+```
+
 ### Enabling Your App
 
 By default your application will be deployment on three hosts:
