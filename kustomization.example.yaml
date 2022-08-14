@@ -4,8 +4,8 @@ apiVersion: 'kustomize.config.k8s.io/v1beta1'
 kind: 'Kustomization'
 
 resources:
-  # Kubernetes Dashboard
-  - 'config/user.admin.yaml'
+  # Kubernetes Dashboard user
+  # - 'config/user.admin.yaml'
 
   # Containers
   - 'config/deployment.homeassistant.yaml'

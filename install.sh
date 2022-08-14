@@ -4,6 +4,7 @@ BASE_DIR=$(cd -- "$(dirname -- "$(readlink "$0" || echo "$0")")" && pwd) # get r
 declare -r BASE_DIR
 declare -r DATA_DIR="${BASE_DIR}/data"
 declare -r CERT_MANAGER_VERSION=${CERT_MANAGER_VERSION:-'v1.9.1'}
+declare -r KUBERNETES_DASHBOARD_VERSION=${KUBERNETES_DASHBOARD_VERSION:-'v2.5.0'}
 declare -r TRAEFIK_VERSION=${TRAEFIK_VERSION:-'v1.7'}
 declare -r RED="\033[0;31m" # ansi colour code sequence for green text
 declare -r GREEN="\033[0;32m" # ansi colour code sequence for green text
@@ -18,6 +19,7 @@ function usage() {
   Arguments:
     --cert-manager - Install cert-manager (https://cert-manager.io/) to manage certificates as resources in kubernetes
     --traefik - Install traefik. Your installation must have traefik for the ingress resources.  Some distributions, such as k3s, ship with traefik by default.
+    --k8s-dashboard - Install kubernetes dashboard for cluster management
     --initialise - Initialise Containers by copying over default config and then deleting the pod for a correct restart. Without persistent volumes set up this will do nothing.
     --soft-initialise - like initialise, but only attempts to reboot containers so that persistent volumes are not needed. However, some containers (such as flame) cannot be rebooted."
   exit 0
@@ -26,6 +28,7 @@ function usage() {
 # Install Cert Manager to manage certificates
 # https://cert-manager.io/docs/
 # Globals:
+#   CERT_MANAGER_VERSION
 #   GREEN
 #   NC
 #########################################
@@ -36,9 +39,23 @@ function install_cert_manager() {
 }
 
 #########################################
+# Install Kubernetes Dashboard
+# https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/# Globals:
+#   KUBERNETES_DASHBOARD_VERSION
+#   GREEN
+#   NC
+#########################################
+function install_k8s_dashboard() {
+  echo -e "${GREEN}Installing Kubernetes Dashboard${NC}"
+  kubectl apply -f \
+    "kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/${KUBERNETES_DASHBOARD_VERSION}/aio/deploy/recommended.yaml"
+}
+
+#########################################
 # Install Cert Manager to manage certificates
 # https://cert-manager.io/docs/
 # Globals:
+#   TRAEFIK_VERSION
 #   GREEN
 #   NC
 #########################################
@@ -176,6 +193,10 @@ function main() {
 
   if [[ "$*" == *'--cert-manager'* ]]; then
     install_cert_manager
+  fi
+
+  if [[ "$*" == *'--k8s-dashboard'* ]]; then
+    install_k8s_dashboard
   fi
 
   # Only install traefik if implicitly implied
