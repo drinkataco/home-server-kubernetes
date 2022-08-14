@@ -3,8 +3,8 @@ BASE_DIR=$(cd -- "$(dirname -- "$(readlink "$0" || echo "$0")")" && pwd) # get r
 
 declare -r BASE_DIR
 declare -r DATA_DIR="${BASE_DIR}/data"
-declare -r CERT_MANAGER_VERSION='v1.8.0'
-declare -r TRAEFIK_VERSION='v1.7'
+declare -r CERT_MANAGER_VERSION=${CERT_MANAGER_VERSION:-'v1.9.1'}
+declare -r TRAEFIK_VERSION=${TRAEFIK_VERSION:-'v1.7'}
 declare -r RED="\033[0;31m" # ansi colour code sequence for green text
 declare -r GREEN="\033[0;32m" # ansi colour code sequence for green text
 declare -r BLUE="\033[0;34m" # ansi colour code sequence for blue text

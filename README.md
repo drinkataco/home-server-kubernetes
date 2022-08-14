@@ -15,6 +15,8 @@ The purpose of this repository is theory! For me have a base to learn and test k
 
 To deploy your cluster simply run copy `./kustomization.example.yaml` to `kustomization.yaml` and run `kubectl apply -k .`.
 
+To install dependencies, boostrap, and deploy have a look at the `./install.sh` script!
+
 ### Enabling Your App
 
 By default your application will be deployment on three hosts:
@@ -50,5 +52,30 @@ To set up public access (over the internet) you can add a patch to change the ho
 You can use the [ingress patch](./custom/examples/ingress.public-patch.yaml) to change a hostname and add TLS. The [certification resource](./custom/examples/ingress.certificate.yaml) can be used to provision a certificate with [cert-manager](https://cert-manager.io/).
 
 The [auth middleware](./custom/examples/middleware-auth.yaml) can be used to set up basic auth for your route(s).
+
+### System Administration
+
+#### Kubernetes Dashboard
+
+View the [official documentation](https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/) for setting up a kubernetes dashboard to manage your cluster.
+
+#### Traefik Dashboard
+
+Use the following command to port forward the traefik dashboard to your localhost:
+
+```bash
+kubectl -n kube-system \
+  port-forward $( \
+    kubectl -n kube-system \
+    get pods \
+    --selector 'app.kubernetes.io/name=traefik' \
+    --output=name \
+      | sed -e 's~pod/~~' \
+      | head -n 1 \
+  ) \
+  9000:9000
+```
+
+This command will port-forward over 9000 the correct traefik pod at [http://localhost:9000/dashboard/](http://localhost:9000/dashboard/)
 
 
