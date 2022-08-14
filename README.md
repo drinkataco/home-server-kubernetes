@@ -15,7 +15,7 @@ The purpose of this repository is theory! For me have a base to learn and test k
 
 To deploy your cluster simply run copy `./kustomization.example.yaml` to `kustomization.yaml` and run `kubectl apply -k .`.
 
-To install dependencies, boostrap, and deploy have a look at the `./install.sh` script!
+To install dependencies, boostrap, and deploy have a look at the `./install.sh --help` script!
 
 ### Enabling Your App
 
@@ -23,9 +23,9 @@ By default your application will be deployment on three hosts:
 
 * `homeassistant` - this will be the homeassistant installation
 * `filebrowser` - the will be filebrowser installation
-* `waffle` - main ingress route for applications. [Flame](https://github.com/pawelmalak/flame) is used on the root directory, and subdirectories can run other applications - for example, waffle/transmission for [transmission](https://github.com/linuxserver/docker-transmission)
+* `avalanche` - main ingress route for applications. [Flame](https://github.com/pawelmalak/flame) is used on the root directory, and subdirectories can run other applications - for example, avalanche/transmission/ for [transmission](https://github.com/linuxserver/docker-transmission)
 
-Add `your_cluster_ip homeassistant filebrowser avalanche` to your /etc/hosts file, or alternatively if your router supports dnsmaqs `address=/crepe/filebrowser/homeassistant/your_cluster_ip`, to then access these services by hostname (where `your_cluster_ip` is the IP address of your kubernetes cluster)
+Add `your_cluster_ip homeassistant filebrowser avalanche` to your /etc/hosts file, or alternatively if your router supports dnsmasq `address=/avalanche/filebrowser/homeassistant/your_cluster_ip`, to then access these services by hostname (where `your_cluster_ip` is the IP address of your kubernetes cluster)
 
 Navigate to `http://filebrowser` in your web browser to now test the connection to filebrowser.
 

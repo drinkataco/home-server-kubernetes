@@ -39,7 +39,7 @@ spec:
 apiVersion: 'traefik.containo.us/v1alpha1'
 kind: 'IngressRoute'
 metadata:
-  name: 'waffle-ingress'
+  name: 'avalanche-ingress'
   annotations:
     kubernetes.io/ingress.class: 'traefik'
 spec:
@@ -47,12 +47,12 @@ spec:
     - 'web'
   routes:
     - kind: 'Rule'
-      match: Host(`waffle`)
+      match: Host(`avalanche`)
       services:
         - name: 'flame'
           port: 5005
     - kind: 'Rule'
-      match: Host(`waffle`) && PathPrefix(`/transmission`)
+      match: Host(`avalanche`) && PathPrefix(`/transmission`)
       services:
         - name: 'transmission'
           port: 9091
