@@ -18,7 +18,8 @@ spec:
     spec:
       containers:
         - name: 'transmission'
-          image: 'linuxserver/transmission:3.00-r5-ls125'
+          # image: 'linuxserver/transmission:3.00-r5-ls125'
+          image: 'linuxserver/transmission:4.0.3-r2-ls178'
           imagePullPolicy: 'Always'
           ports:
             - containerPort: 9091

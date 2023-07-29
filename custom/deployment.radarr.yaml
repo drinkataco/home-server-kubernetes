@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: 'radarr'
-          image: 'linuxserver/radarr'
+          image: 'linuxserver/radarr:arm32v7-4.5.2'
           imagePullPolicy: 'Always'
           ports:
             - containerPort: 7878
