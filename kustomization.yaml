@@ -35,3 +35,8 @@ patchesStrategicMerge:
   - 'custom/patches/deployment.transmission.yaml'
   - 'custom/patches/ingress.yaml'
 
+# patches:
+# - path: custom/patches/deployment.filebrowser.yaml
+# - path: custom/patches/deployment.flame.yaml
+# - path: custom/patches/deployment.transmission.yaml
+# - path: custom/patches/ingress.yaml
