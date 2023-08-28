@@ -1,0 +1,32 @@
+---
+
+apiVersion: 'kustomize.config.k8s.io/v1beta1'
+kind: 'Kustomization'
+
+resources:
+  - './namespaces.yaml'
+  # - './kubernetes-dashboard-user.yaml'
+
+helmCharts:
+  # - name: 'cert-manager'
+  #   version: '1.12.0'
+  #   repo: 'https://charts.jetstack.io'
+  #   includeCRDs: true
+  #   namespace: 'cert-manager'
+
+  # - name: 'kubernetes-dashboard'
+    # releaseName: 'kubernetes-dashboard'
+    # version: '6.0.8'
+    # repo: 'https://kubernetes.github.io/dashboard/'
+    # namespace: 'kubernetes-dashboard'
+    # valuesInline:
+      # cert-manager:
+        # enabled: false
+
+  - name: 'traefik'
+    releaseName: 'traefik'
+    # version: '24.0.0'
+    version: '22.2.0'
+    repo: 'https://traefik.github.io/charts'
+    includeCRDs: true
+    namespace: 'traefik-v2'
