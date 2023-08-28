@@ -18,8 +18,7 @@ spec:
     spec:
       containers:
         - name: 'transmission'
-          # image: 'linuxserver/transmission:3.00-r5-ls125'
-          image: 'linuxserver/transmission:4.0.3-r2-ls178'
+          image: 'linuxserver/transmission'
           imagePullPolicy: 'Always'
           ports:
             - containerPort: 9091
@@ -37,7 +36,6 @@ spec:
             httpGet:
               port: 9091
               path: '/'
-            failureThreshold: 50 # my pi's are slow. Sometimes transmission gets backtracked
             initialDelaySeconds: 30
             periodSeconds: 10
             terminationGracePeriodSeconds: 30

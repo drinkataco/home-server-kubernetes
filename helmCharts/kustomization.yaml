@@ -1,0 +1,21 @@
+---
+
+apiVersion: 'kustomize.config.k8s.io/v1beta1'
+kind: 'Kustomization'
+
+resources:
+  - './namespaces.yaml'
+
+helmCharts:
+  - name: 'traefik'
+    releaseName: 'traefik'
+    version: 'v24.0.0'
+    repo: 'https://traefik.github.io/charts'
+    includeCRDs: true
+    namespace: 'traefik-v2'
+  - name: 'cert-manager'
+    releaseName: 'cert-manager'
+    version: '1.12.0'
+    repo: 'https://charts.jetstack.io'
+    includeCRDs: true
+    namespace: 'cert-manager'

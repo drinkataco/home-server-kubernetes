@@ -1,0 +1,19 @@
+---
+
+apiVersion: 'kustomize.config.k8s.io/v1beta1'
+kind: 'Kustomization'
+
+resources:
+  # Deployments and Services
+  - './deployments/flame.yaml'
+  - './deployments/homeassistant.yaml'
+  - './deployments/transmission.yaml'
+  - './deployments/whoami.yaml'
+
+  # Ingress - Middlewares
+  - './ingress/middlewares/traefik-path.yaml'
+
+  # Ingress - Routes
+  - './ingress/filebrowser.yaml'
+  - './ingress/homeassistant.yaml'
+  - './ingress/main.yaml'

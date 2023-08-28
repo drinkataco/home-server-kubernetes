@@ -7,7 +7,6 @@ metadata:
   labels:
     app: 'filebrowser'
 spec:
-  replicas: 1
   selector:
     matchLabels:
       app: 'filebrowser'

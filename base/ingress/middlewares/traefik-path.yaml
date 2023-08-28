@@ -1,5 +1,7 @@
 ---
 
+# MIDDLEWARE
+# Strip out prefix for traefik-dashboard ingress
 apiVersion: 'traefik.containo.us/v1alpha1'
 kind: 'Middleware'
 metadata:

@@ -1,0 +1,42 @@
+---
+
+apiVersion: 'traefik.containo.us/v1alpha1'
+kind: 'IngressRoute'
+metadata:
+  name: 'andrut-ingress'
+spec:
+  entryPoints:
+    - 'web'
+  routes:
+    # - kind: 'Rule'
+      # match: Host(`waffle`)
+      # services:
+        # - name: 'flame'
+          # port: 5005
+    - kind: 'Rule'
+      match: Host(`waffle`) && PathPrefix(`/whoami`)
+      services:
+        - name: 'whoami'
+          port: 80
+    - kind: 'Rule'
+      match: Host(`waffle`) &&  PathPrefix(`/transmission`)
+      services:
+        - name: 'transmission'
+          port: 9091
+
+    # Traefik Dashboard
+    # TODO: Metrics
+    - match: Host(`waffle`) && PathPrefix(`/traefik/`)
+      kind: 'Rule'
+      services:
+        - name: 'api@internal'
+          kind: 'TraefikService'
+      middlewares:
+        - name: 'traefik-path'
+    - match: PathPrefix(`/api`) && HeadersRegexp(`Referer`, `.*/traefik/.*`)
+      kind: 'Rule'
+      services:
+        - name: 'api@internal'
+          kind: 'TraefikService'
+
+    # TODO: Kubernetes Dashboard
