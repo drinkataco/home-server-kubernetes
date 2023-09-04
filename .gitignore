@@ -1,1 +1,5 @@
 coc-settings.json
+helm/charts/
+overlays/*
+!overlays/base
+!oberlays/example
