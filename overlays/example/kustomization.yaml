@@ -5,9 +5,5 @@ kind: 'Kustomization'
 
 namespace: 'andrut'
 
-configurations:
-  - './configurations/nameReference.yaml'
-
 resources:
-  - '../../base'
   - './namespace.yaml'
