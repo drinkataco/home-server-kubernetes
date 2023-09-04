@@ -5,6 +5,7 @@ kind: 'Kustomization'
 
 resources:
   # Deployments and Services
+  - './deployments/filebrowser.yaml'
   - './deployments/flame.yaml'
   - './deployments/homeassistant.yaml'
   - './deployments/transmission.yaml'
@@ -12,6 +13,7 @@ resources:
 
   # Ingress - Middlewares
   - './ingress/middlewares/traefik-path.yaml'
+  - './ingress/middlewares/secure-headers.yaml'
 
   # Ingress - Routes
   - './ingress/filebrowser.yaml'

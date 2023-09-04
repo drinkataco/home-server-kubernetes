@@ -22,20 +22,6 @@ spec:
           ports:
             - containerPort: 80
               protocol: 'TCP'
-          volumeMounts:
-            - mountPath: '/srv'
-              name: 'filebrowser-srv'
-          livenessProbe:
-            httpGet:
-              port: 80
-              path: '/health'
-            failureThreshold: 3
-            initialDelaySeconds: 30
-            periodSeconds: 10
-            terminationGracePeriodSeconds: 60
-      volumes:
-        - name: 'filebrowser-srv'
-          emptyDir: {}
 
 ---
 

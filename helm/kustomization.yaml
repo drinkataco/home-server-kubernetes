@@ -5,28 +5,20 @@ kind: 'Kustomization'
 
 resources:
   - './namespaces.yaml'
-  # - './kubernetes-dashboard-user.yaml'
+  # NOTE: This is for cert-manager, as includeCRDs fails.
+  - 'https://github.com/cert-manager/cert-manager/releases/download/v1.12.3/cert-manager.crds.yaml'
 
 helmCharts:
-  # - name: 'cert-manager'
-  #   version: '1.12.0'
-  #   repo: 'https://charts.jetstack.io'
-  #   includeCRDs: true
-  #   namespace: 'cert-manager'
-
-  # - name: 'kubernetes-dashboard'
-    # releaseName: 'kubernetes-dashboard'
-    # version: '6.0.8'
-    # repo: 'https://kubernetes.github.io/dashboard/'
-    # namespace: 'kubernetes-dashboard'
-    # valuesInline:
-      # cert-manager:
-        # enabled: false
+  - name: 'cert-manager'
+    releaseName: 'cert-manager'
+    version: '1.12.3'
+    repo: 'https://charts.jetstack.io'
+    includeCRDs: true
+    namespace: 'cert-manager'
 
   - name: 'traefik'
     releaseName: 'traefik'
-    # version: '24.0.0'
-    version: '22.2.0'
+    version: '24.0.0'
     repo: 'https://traefik.github.io/charts'
     includeCRDs: true
     namespace: 'traefik-v2'

@@ -26,15 +26,6 @@ spec:
           volumeMounts:
             - mountPath: '/config'
               name: 'homeassistant-config'
-          livenessProbe:
-            httpGet:
-              port: 8123
-              path: '/'
-            failureThreshold: 3
-            initialDelaySeconds: 30
-            periodSeconds: 10
-            terminationGracePeriodSeconds: 30
-
       volumes:
         - name: 'homeassistant-config'
           emptyDir: {}
