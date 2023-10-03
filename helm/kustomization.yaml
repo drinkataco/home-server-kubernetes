@@ -4,21 +4,5 @@ apiVersion: 'kustomize.config.k8s.io/v1beta1'
 kind: 'Kustomization'
 
 resources:
-  - './namespaces.yaml'
-  # NOTE: This is for cert-manager, as includeCRDs fails.
-  - 'https://github.com/cert-manager/cert-manager/releases/download/v1.12.3/cert-manager.crds.yaml'
-
-helmCharts:
-  - name: 'cert-manager'
-    releaseName: 'cert-manager'
-    version: '1.12.3'
-    repo: 'https://charts.jetstack.io'
-    includeCRDs: true
-    namespace: 'cert-manager'
-
-  - name: 'traefik'
-    releaseName: 'traefik'
-    version: '24.0.0'
-    repo: 'https://traefik.github.io/charts'
-    includeCRDs: true
-    namespace: 'traefik-v2'
+  - './cert-manager'
+  - './traefik'
