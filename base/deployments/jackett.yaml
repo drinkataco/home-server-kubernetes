@@ -27,6 +27,14 @@ spec:
               name: 'jackett-config'
             - mountPath: '/torrents'
               name: 'jackett-torrents-blackhole'
+          livenessProbe:
+            httpGet:
+              port: 9117
+              path: '/jackett/health'
+            failureThreshold: 3
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            terminationGracePeriodSeconds: 30
       volumes:
         - name: 'jackett-config'
           emptyDir: {}

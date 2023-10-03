@@ -30,6 +30,14 @@ spec:
               name: 'radarr-downloads'
             - mountPath: '/movies'
               name: 'radarr-film'
+          livenessProbe:
+            httpGet:
+              port: 7878
+              path: '/radarr'
+            failureThreshold: 3
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            terminationGracePeriodSeconds: 30
       volumes:
         - name: 'radarr-config'
           emptyDir: {}

@@ -25,6 +25,14 @@ spec:
           volumeMounts:
             - mountPath: '/app/data'
               name: 'flame-config'
+          livenessProbe:
+            httpGet:
+              port: 5005
+              path: '/'
+            failureThreshold: 3
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            terminationGracePeriodSeconds: 30
       volumes:
         - name: 'flame-config'
           emptyDir: {}

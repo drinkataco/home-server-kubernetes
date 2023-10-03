@@ -29,6 +29,14 @@ spec:
               name: 'sonarr-downloads'
             - mountPath: '/tv'
               name: 'sonarr-tv'
+          livenessProbe:
+            httpGet:
+              port: 8989
+              path: '/sonarr'
+            failureThreshold: 3
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            terminationGracePeriodSeconds: 30
       volumes:
         - name: 'sonarr-config'
           emptyDir: {}
