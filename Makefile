@@ -8,9 +8,6 @@ OVERLAY_DIR := $(ROOT_DIR)/overlays
 ENV ?= base
 OVERLAY := $(OVERLAY_DIR)/$(ENV)
 
-deps:
-	kubectl kustomize --enable-helm $(HELM_DIR) | kubectl apply -f -
-
 apply:
 	@if [ ! -d "$(OVERLAY)" ]; then \
 		echo "Overlay named '$(ENV)' doesn't exist"; \
@@ -18,6 +15,9 @@ apply:
 	fi
 
 	kubectl kustomize $(OVERLAY) | kubectl apply -f -
+
+deps:
+	kubectl kustomize --enable-helm $(HELM_DIR) | kubectl apply -f -
 
 delete:
 	@if [ ! -d "$(OVERLAY)" ]; then \
