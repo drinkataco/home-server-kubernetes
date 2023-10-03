@@ -1,0 +1,55 @@
+---
+
+apiVersion: 'apps/v1'
+kind: 'Deployment'
+metadata:
+  name: 'radarr'
+  labels:
+    app: 'radarr'
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: 'radarr'
+  template:
+    metadata:
+      labels:
+        app: 'radarr'
+    spec:
+      containers:
+        - name: 'radarr'
+          image: 'linuxserver/radarr'
+          imagePullPolicy: 'Always'
+          ports:
+            - containerPort: 7878
+              protocol: 'TCP'
+          volumeMounts:
+            - mountPath: '/config'
+              name: 'radarr-config'
+            - mountPath: '/downloads'
+              name: 'radarr-downloads'
+            - mountPath: '/movies'
+              name: 'radarr-film'
+      volumes:
+        - name: 'radarr-config'
+          emptyDir: {}
+        - name: 'radarr-downloads'
+          emptyDir: {}
+        - name: 'radarr-film'
+          emptyDir: {}
+
+---
+
+apiVersion: 'v1'
+kind: 'Service'
+metadata:
+  name: 'radarr'
+  labels:
+    app: 'radarr'
+spec:
+  ports:
+    - port: 7878
+      protocol: 'TCP'
+      targetPort: 7878
+  selector:
+    app: 'radarr'

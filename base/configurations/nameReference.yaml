@@ -8,4 +8,7 @@ nameReference:
     fieldSpecs:
       - kind: 'IngressRoute'
         path: 'spec/routes/services/name'
-
+  - kind: 'Secret'
+    fieldSpecs:
+      - kind: 'Middleware'
+        path: 'spec/basicAuth/secret'

@@ -1,0 +1,50 @@
+---
+
+apiVersion: 'apps/v1'
+kind: 'Deployment'
+metadata:
+  name: 'jackett'
+  labels:
+    app: 'jackett'
+spec:
+  selector:
+    matchLabels:
+      app: 'jackett'
+  template:
+    metadata:
+      labels:
+        app: 'jackett'
+    spec:
+      containers:
+        - name: 'jackett'
+          image: 'linuxserver/jackett'
+          imagePullPolicy: 'Always'
+          ports:
+            - containerPort: 9117
+              protocol: 'TCP'
+          volumeMounts:
+            - mountPath: '/config/Jackett'
+              name: 'jackett-config'
+            - mountPath: '/torrents'
+              name: 'jackett-torrents-blackhole'
+      volumes:
+        - name: 'jackett-config'
+          emptyDir: {}
+        - name: 'jackett-torrents-blackhole'
+          emptyDir: {}
+
+---
+
+apiVersion: 'v1'
+kind: 'Service'
+metadata:
+  name: 'jackett'
+  labels:
+    app: 'jackett'
+spec:
+  ports:
+    - port: 9117
+      protocol: 'TCP'
+      targetPort: 9117
+  selector:
+    app: 'jackett'

@@ -19,6 +19,21 @@ spec:
         - name: 'whoami'
           port: 80
     - kind: 'Rule'
+      match: Host(`andrut`) && PathPrefix(`/jackett`)
+      services:
+        - name: 'jackett'
+          port: 9117
+    - kind: 'Rule'
+      match: Host(`andrut`) && PathPrefix(`/radarr`)
+      services:
+        - name: 'radarr'
+          port: 7878
+    - kind: 'Rule'
+      match: Host(`andrut`) && PathPrefix(`/sonarr`)
+      services:
+        - name: 'sonarr'
+          port: 8989
+    - kind: 'Rule'
       match: Host(`andrut`) &&  PathPrefix(`/transmission`)
       services:
         - name: 'transmission'
