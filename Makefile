@@ -16,7 +16,7 @@ apply:
 
 	kubectl kustomize $(OVERLAY) | kubectl apply -f -
 
-deps:
+dependencies:
 	kubectl kustomize --enable-helm $(HELM_DIR) | kubectl apply -f -
 
 delete:
