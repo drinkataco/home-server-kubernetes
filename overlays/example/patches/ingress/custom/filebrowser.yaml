@@ -1,0 +1,9 @@
+---
+
+- op: 'replace'
+  path: '/spec/routes/0/match'
+  value: Host(`$W_FILEBROWSER_DOMAIN`)
+# - op: 'add'
+  # path: '/spec/routes/0/middlewares'
+  # value:
+    # - name: 'secure-headers'

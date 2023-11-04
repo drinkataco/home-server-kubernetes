@@ -1,0 +1,14 @@
+---
+
+apiVersion: 'cert-manager.io/v1'
+kind: 'Certificate'
+metadata:
+  name: 'main-cert'
+spec:
+  commonName: '$W_MAIN_DOMAIN'
+  secretName: 'main-tls-secret'
+  dnsNames:
+    - '$W_MAIN_DOMAIN'
+  issuerRef:
+    name: 'letsencrypt'
+    kind: 'ClusterIssuer'

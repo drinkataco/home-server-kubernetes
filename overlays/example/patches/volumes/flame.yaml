@@ -1,0 +1,16 @@
+---
+
+apiVersion: 'apps/v1'
+kind: 'Deployment'
+metadata:
+  name: 'flame'
+spec:
+  template:
+    spec:
+      volumes:
+        - name: 'flame-config'
+          nfs:
+            server: '$W_NFS_HOST'
+            path: '/srv/config/flame'
+          emptyDir:
+

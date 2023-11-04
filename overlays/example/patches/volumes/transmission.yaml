@@ -1,0 +1,20 @@
+---
+
+apiVersion: 'apps/v1'
+kind: 'Deployment'
+metadata:
+  name: 'transmission'
+spec:
+  template:
+    spec:
+      volumes:
+        - name: 'transmission-config'
+          nfs:
+            server: '$W_NFS_HOST'
+            path: '/srv/config/transmission'
+          emptyDir:
+        - name: 'transmission-downloads'
+          nfs:
+            server: '$W_NFS_HOST'
+            path: '/srv/downloads'
+          emptyDir:

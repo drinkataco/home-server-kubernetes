@@ -1,0 +1,21 @@
+---
+
+apiVersion: 'apps/v1'
+kind: 'Deployment'
+metadata:
+  name: 'filebrowser'
+spec:
+  template:
+    spec:
+      containers:
+        - name: 'filebrowser'
+          command: ['/filebrowser']
+          args: ['-c', '/config/filebrowser.json']
+          volumeMounts:
+            - mountPath: '/config'
+              name: 'filebrowser-config'
+      volumes:
+        - name: 'filebrowser-config'
+          nfs:
+            server: '$W_NFS_HOST'
+            path: '/srv/config/filebrowser'

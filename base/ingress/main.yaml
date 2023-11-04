@@ -9,38 +9,38 @@ spec:
     - 'web'
   routes:
     - kind: 'Rule'
-      match: Host(`andrut`)
+      match: Host(`waffle`)
       services:
         - name: 'flame'
           port: 5005
     - kind: 'Rule'
-      match: Host(`andrut`) && PathPrefix(`/whoami`)
+      match: Host(`waffle`) && PathPrefix(`/whoami`)
       services:
         - name: 'whoami'
           port: 80
     - kind: 'Rule'
-      match: Host(`andrut`) && PathPrefix(`/jackett`)
+      match: Host(`waffle`) && PathPrefix(`/jackett`)
       services:
         - name: 'jackett'
           port: 9117
     - kind: 'Rule'
-      match: Host(`andrut`) && PathPrefix(`/radarr`)
+      match: Host(`waffle`) && PathPrefix(`/radarr`)
       services:
         - name: 'radarr'
           port: 7878
     - kind: 'Rule'
-      match: Host(`andrut`) && PathPrefix(`/sonarr`)
+      match: Host(`waffle`) && PathPrefix(`/sonarr`)
       services:
         - name: 'sonarr'
           port: 8989
     - kind: 'Rule'
-      match: Host(`andrut`) &&  PathPrefix(`/transmission`)
+      match: Host(`waffle`) &&  PathPrefix(`/transmission`)
       services:
         - name: 'transmission'
           port: 9091
 
     # Traefik Dashboard
-    - match: Host(`andrut`) && PathPrefix(`/traefik/`)
+    - match: Host(`waffle`) && PathPrefix(`/traefik/`)
       kind: 'Rule'
       services:
         - name: 'api@internal'

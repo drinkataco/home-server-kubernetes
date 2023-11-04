@@ -1,0 +1,50 @@
+---
+
+apiVersion: 'traefik.io/v1alpha1'
+kind: 'IngressRoute'
+metadata:
+  name: 'main-ingress'
+spec:
+  routes:
+    - kind: 'Rule'
+      match: Host(`$W_MAIN_DOMAIN`)
+      priority: 20
+      services:
+        - name: 'flame'
+          port: 5005
+      # middlewares:
+        # - name: 'secure-headers'
+        # - name: 'basic-auth'
+    - kind: 'Rule'
+      match: Host(`$W_MAIN_DOMAIN`) && PathPrefix(`/transmission`)
+      services:
+        - name: 'transmission'
+          port: 9091
+      # middlewares:
+        # - name: 'secure-headers'
+        # - name: 'basic-auth'
+    - kind: 'Rule'
+      match: Host(`$W_MAIN_DOMAIN`) && PathPrefix(`/whoami`)
+      services:
+        - name: 'whoami'
+          port: 80
+    #
+    # INTERNAL : Traefik Dashboard
+    #
+    # - match: Host(`$W_MAIN_DOMAIN`) && PathPrefix(`/traefik`)
+      # kind: 'Rule'
+      # services:
+        # - name: 'api@internal'
+          # kind: 'TraefikService'
+      # middlewares:
+        # - name: 'traefik-path'
+        # - name: 'secure-headers'
+        # - name: 'basic-auth'
+    # - match: PathPrefix(`/api`) && HeadersRegexp(`Referer`, `.*/traefik/.*`)
+      # kind: 'Rule'
+      # services:
+        # - name: 'api@internal'
+          # kind: 'TraefikService'
+      # middlewares:
+        # - name: 'secure-headers'
+        # - name: 'basic-auth'
