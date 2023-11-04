@@ -1,18 +1,10 @@
-# Andrut - Home Server
+# Waffle - Home Server
 
 This repository contains a kubernetes cluster starter for a home server, and includes traefik ingress controllers for public and local access.
 
 The sister project, [home-server-ansible](https://github.com/drinkataco/home-server-ansible) allows you to provision a file server and kubernetes cluster, using k3s.
 
-Here is a sample of services included:
-
-- [Home Assistant](https://www.home-assistant.io/)
-- [Filebrowser](https://github.com/filebrowser/filebrowser)
-- [Flame](https://hub.docker.com/r/pawelmalak/flame)
-    - [Transmission](https://z.shw.al/transmission/web/)
-    - [Radarr](https://wiki.servarr.com/radarr/) / [Sonarr](https://wiki.servarr.com/sonarr/) / [Bazarr](https://www.bazarr.media/)
-    - [Jackett](https://github.com/Jackett/Jackett)
-    - [PiHole](https://pi-hole.net/)
+Services includes by default include [Home Assistant](https://www.home-assistant.io/), [Filebrowser](https://github.com/filebrowser/filebrowser), [Flame](https://hub.docker.com/r/pawelmalak/flame), [Transmission](https://z.shw.al/transmission/web/)
 
 ## Contents
 
@@ -43,7 +35,7 @@ Deploy your cluster with `kubectl kustomize overlays/your-cluster | kubectl appl
 
 ### Configuration
 
-When initialising it is recommended that you use some default configuration provided in [./assets](./assets) by running `./setup.sh defaults andrut` - where `andrut` is the name of your cluster.
+When initialising it is recommended that you use some default configuration provided in [./assets](./assets) by running `./setup.sh defaults waffle` - where `waffle` is the name of your cluster.
 
 This default configuration set some basic settings on containers, such as to enable ingress routes.
 
@@ -52,14 +44,14 @@ This default configuration set some basic settings on containers, such as to ena
 You should add the following to you `/etc/hosts` file to access your cluster - with the IP address being the location of your cluster.
 
 ```
-127.0.0.1 homeassistant filebrowser andrut
+127.0.0.1 homeassistant filebrowser waffle
 ```
 
 Alternatively, you could add `address=/crepe/filebrowser/homeassistant/your_cluster_ip` (where your_cluster_ip is the IP of your kubernetes cluster) to your `dnsmasq` config for network-wide DNS.
 
 You can then access the services from your web browser:
 
-- [http://andrut/](http://andrut/) - main route and ingress for most services
+- [http://waffle/](http://waffle/) - main route and ingress for most services
 - [http://filebrowser/](http://filebrowser/) - [filebrowser](https://github.com/filebrowser/filebrowser) service
 - [http://homeassistant/](http://homeassistant/) - [homeassistant](https://www.home-assistant.io/) automation service
 

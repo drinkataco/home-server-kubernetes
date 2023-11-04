@@ -18,24 +18,6 @@ function usage() {
 }
 
 #########################################
-# get container id from name
-# arguments:
-#   1 - generic name of container which the id will be prepended with
-# returns
-#   id of container
-#######################################
-# function get_container() {
-  # local container_name=$1
-
-  # kubectl get pods \
-    # --field-selector=status.phase=Running \
-    # --no-headers \
-    # -o custom-columns=':metadata.name' \
-    # | grep "${container_name}"
-# }
-
-
-#########################################
 # copy files from containers data directory to the container.
 # this is performed recursively as to simulate merging of directories and subdirectories if needed
 # arguments:
@@ -62,14 +44,23 @@ function copy_files() {
 
     if [[ $dest != "/*" ]]; then
       echo "...copying ${dest} to ${pod}"
-      echo kubectl cp "${path}" "${pod}:${dest}" -n "${K8S_NAMESPACE}"
+      kubectl cp "${path}" "${pod}:/${dest}" -n "${K8S_NAMESPACE}"
     fi
-  done 
+  done
 }
 
+#########################################
+# Check that kubernetes namespace exists
+# Arguments:
+#   1 - namespace to check
+# Returns:
+#   0 - namespace found
+#   1 - namespace not found
+#######################################
 function check_namespace() {
   local namespace="${1}"
-  local output="$(mktemp)"
+  local output
+  output="$(mktemp)"
 
   if kubectl get namespace "${namespace}" > "${output}" 2>&1; then
     echo -e "${GREEN}Namespace '${namespace}' found${NC}"
@@ -77,11 +68,14 @@ function check_namespace() {
     K8S_NAMESPACE="${namespace}"
     return 0
   else
-    echo -e "${RED}$(cat ${output})${NC}\n" >&2
+    echo -e "${RED}$(cat "${output}")${NC}\n" >&2
     return 1
   fi
 }
 
+#########################################
+# Select namespace from available namespaces
+#######################################
 function select_namespace() {
   local namespaces
   local selection
@@ -163,7 +157,8 @@ function set_defaults() {
 
     # Copy
     echo -e "\n${BLUE}Copying '${service}'${NC}"
-    copy_files "${pod}" "${ASSETS_DIR}/${service}/" "${ASSETS_DIR}/${service}/"
+    copy_files "${pod:4}" "${ASSETS_DIR}/${service}" "${ASSETS_DIR}/${service}/"
+    echo kubectl rollout restart deployment "${service}"
   done
 
   cd - > /dev/null
@@ -193,29 +188,6 @@ function main() {
       exit 1
       ;;
   esac
-
-  # if [[ "$1" == 'help' || "$1" == '--help' ]]; then
-  #   usage
-  # fi
-
-  # if [[ "$*" == *'--cert-manager'* ]]; then
-  #   install_cert_manager
-  # fi
-
-  # # Only install traefik if implicitly implied
-  # # K3s, for example, automatically ships with traefik so no need to install
-  # if [[ "$*" == *'--traefik'* ]]; then
-  #   install_traefik
-  # fi
-
-  # apply_k8s
-
-  # if [[ "$*" == *'--soft-initialise'* ]]; then
-  #   copy_default_data 1
-  # elif [[ "$*" == *'--initialise'* ]]; then
-  #   copy_default_data
-  # fi
-
 }
 
 main "$@"
