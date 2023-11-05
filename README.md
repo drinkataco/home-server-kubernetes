@@ -10,6 +10,7 @@ Services includes by default include [Home Assistant](https://www.home-assistant
 
 <!-- vim-md-toc format=bullets max_level=4 ignore=^Contents$ -->
 * [Quick Start](#quick-start)
+  * [Configuration](#configuration)
   * [Access](#access)
 * [Advanced](#advanced)
   * [Kustomization](#kustomization)
@@ -31,6 +32,12 @@ Copy the `overlays/example` directory with a name of your choosing, for example 
 Install all dependencies with `kubectl kustomize --enable-helm ./helm | kubectl apply -f -` (or `make dependencies`). If are using [k3s](https://k3s.io) as your kubernetes distribution, make sure you installed it with `--disable=traefik`, so we can manage traefik here.
 
 Deploy your cluster with `kubectl kustomize overlays/your-cluster | kubectl apply -f -` (or `ENV=your-cluster make`)
+
+### Configuration
+
+You should add a [volume](https://kubernetes.io/docs/concepts/storage/volumes/) to each pod to persist data.
+
+Several containers need some extra configuration to work through our architecture. Homeassistant, for example, requires you to enable reverse proxy access by setting `http.use_x_Forwarded_for: true` and `http.trusted_proxies[] = '10.0.0.0/8'`, as defined in their [documentation](https://www.home-assistant.io/integrations/http/#reverse-proxie).
 
 ### Access
 
