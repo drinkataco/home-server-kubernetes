@@ -1,0 +1,14 @@
+---
+
+# Allow IngressRoute Services to synchronise service name
+# Fixes nameSuffix / namePrefix propagation issues
+# @see https://stackoverflow.com/a/71704024
+nameReference:
+  - kind: 'Service'
+    fieldSpecs:
+      - kind: 'IngressRoute'
+        path: 'spec/routes/services/name'
+  - kind: 'Secret'
+    fieldSpecs:
+      - kind: 'Middleware'
+        path: 'spec/basicAuth/secret'

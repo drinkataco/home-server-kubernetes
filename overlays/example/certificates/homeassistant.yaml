@@ -1,0 +1,14 @@
+---
+
+apiVersion: 'cert-manager.io/v1'
+kind: 'Certificate'
+metadata:
+  name: 'homeassistant-cert'
+spec:
+  commonName: '$W_HOMEASSISTANT_DOMAIN'
+  secretName: 'secret-homeassistant-tls'
+  dnsNames:
+    - '$W_HOMEASSISTANT_DOMAIN'
+  issuerRef:
+    name: 'letsencrypt'
+    kind: 'ClusterIssuer'

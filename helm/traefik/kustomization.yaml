@@ -1,0 +1,27 @@
+---
+
+apiVersion: 'kustomize.config.k8s.io/v1beta1'
+kind: 'Kustomization'
+
+resources:
+  - './namespace.yaml'
+
+helmCharts:
+  - name: 'traefik'
+    releaseName: 'traefik'
+    version: '24.0.0'
+    repo: 'https://traefik.github.io/charts'
+    includeCRDs: true
+    namespace: 'traefik-v2'
+    valuesInline:
+      hostNetwork: true
+      externalTrafficPolicy: Local
+      additionalArguments:
+        # Allow headers/proxy to be forwarded from local network
+        - '--entryPoints.web.proxyProtocol.trustedIPs=10.0.0.0/8,192.168.0.0/16'
+        - '--entryPoints.web.forwardedHeaders.trustedIPs=10.0.0.0/8,192.168.0.0/16'
+        - '--entryPoints.websecure.proxyProtocol.trustedIPs=10.0.0.0/8,192.168.0.0/16'
+        - '--entryPoints.websecure.forwardedHeaders.trustedIPs=10.0.0.0/8,192.168.0.0/16'
+        # Enable me for HTTP to HTTPS force redirection
+        # - '--entrypoints.web.http.redirections.entrypoint.to=:443'
+        # - '--entrypoints.web.http.redirections.entrypoint.permanent=true'

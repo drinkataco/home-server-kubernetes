@@ -1,0 +1,60 @@
+---
+####################################################################################
+# -- EXAMPLE BASE OVERLAY -------------------------------------------------------- #
+#                                                                                  #
+# By default, this overlay only adds a namespace, named waffle, to your deployment #
+#                                                                                  #
+# Consult the README (#customising-with-patches) about:                            #
+#   - Adding a persistent volume                                                   #
+#   - Enabling web access                                                          #
+#   - Enabling basic-auth                                                          #
+#   - Generating a HTTPS certificate                                               #
+####################################################################################
+apiVersion: 'kustomize.config.k8s.io/v1beta1'
+kind: 'Kustomization'
+
+namespace: 'waffle'
+
+secretGenerator:
+  # Basic Auth Secret for Main Ingress
+  - name: 'secret-basic-auth'
+    # Can be a literal, or a file pointing to a .htpasswd file
+    literals:
+      # The value, a string username and hashed password are generated using the following command
+      #   htpasswd -nb admin password
+      - users=admin:$apr1$pqNqCSKD$DZDByO3BPFaI5cf5R1t7G0
+
+resources:
+  - '../../base'
+  - './namespace.yaml'
+  # Cert Manager CRDs
+  # - './certificates/issuer.yaml'
+  # - './certificates/filebrowser.yaml'
+  # - './certificates/homeassistant.yaml'
+  # - './certificates/main.yaml'
+
+# patches:
+  # VOLUMES - Example patches to enable 
+  # - path: './patches/volumes/filebrowser.yaml'
+  # - path: './patches/volumes/flame.yaml'
+  # - path: './patches/volumes/homeassistant.yaml'
+  # - path: './patches/volumes/transmission.yaml'
+  # - path: './patches/volumes/sonarr.yaml'
+  # - path: './patches/volumes/radarr.yaml'
+  # - path: './patches/volumes/jackett.yaml'
+
+  # HTTPS - connect HTTPS certificate and open port 443
+  # - path: './patches/ingress/https/main.yaml'
+  # - path: './patches/ingress/https/filebrowser.yaml'
+  # - path: './patches/ingress/https/homeassistant.yaml'
+
+  # INGRESS ROUTES - Custom Patches; such as middlewares and host names
+  # - target:
+  #     kind: 'IngressRoute'
+  #     name: 'filebrowser-ingress'
+  #   path: './patches/ingress/custom/filebrowser.yaml'
+  # - target:
+  #     kind: 'IngressRoute'
+  #     name: 'homeassistant-ingress'
+  #   path: './patches/ingress/custom/homeassistant.yaml'
+  # - path: './patches/ingress/custom/main.yaml'

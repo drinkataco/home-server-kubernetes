@@ -1,11 +1,25 @@
-# Home Assistant Kubernetes Cluster
+# Waffle - Home Server
 
-This repository contains a kubernetes cluster starter for a homeserver, and includes traefik ingress controllers for public and local access.
+This repository contains a kubernetes cluster starter for a home server, and includes traefik ingress controllers for public and local access.
 
-Included as default are the following containers:
+The sister project, [home-server-ansible](https://github.com/drinkataco/home-server-ansible) allows you to provision a file server and kubernetes cluster, using k3s.
 
-* [Home Assistant](https://www.home-assistant.io/)
-* [Filebrowser](https://github.com/filebrowser/filebrowser)
+Services includes by default include [Home Assistant](https://www.home-assistant.io/), [Filebrowser](https://github.com/filebrowser/filebrowser), [Flame](https://hub.docker.com/r/pawelmalak/flame), [Transmission](https://z.shw.al/transmission/web/)
+
+## Contents
+
+<!-- vim-md-toc format=bullets max_level=4 ignore=^Contents$ -->
+* [Quick Start](#quick-start)
+  * [Configuration](#configuration)
+  * [Access](#access)
+* [Advanced](#advanced)
+  * [Kustomization](#kustomization)
+  * [Customising with Patches](#customising-with-patches)
+    * [Basic Auth](#basic-auth)
+    * [Volumes](#volumes)
+    * [Internet Access](#internet-access)
+    * [HTTPS](#https)
+<!-- vim-md-toc END -->
 
 **Why Kubernetes?**
 
@@ -13,77 +27,77 @@ The purpose of this repository is theory! For me have a base to learn and test k
 
 ## Quick Start
 
-To deploy your cluster simply run copy `./kustomization.example.yaml` to `kustomization.yaml` and run `kubectl apply -k .`.
+Copy the `overlays/example` directory with a name of your choosing, for example `overlays/your-cluster`.
 
-To install dependencies, boostrap, and deploy have a look at the `./install.sh --help` script!
+Install all dependencies with `kubectl kustomize --enable-helm ./helm | kubectl apply -f -` (or `make dependencies`). If are using [k3s](https://k3s.io) as your kubernetes distribution, make sure you installed it with `--disable=traefik`, so we can manage traefik here.
 
-To install all dependencies, we could run something similar to:
-```bash
-./install.sh \
-  --cert-manager \
-  --traefik \
-  --k8s-dashboard
+Deploy your cluster with `kubectl kustomize overlays/your-cluster | kubectl apply -f -` (or `ENV=your-cluster make`)
+
+### Configuration
+
+You should add a [volume](https://kubernetes.io/docs/concepts/storage/volumes/) to each pod to persist data.
+
+Several containers need some extra configuration to work through our architecture. Homeassistant, for example, requires you to enable reverse proxy access by setting `http.use_x_Forwarded_for: true` and `http.trusted_proxies[] = '10.0.0.0/8'`, as defined in their [documentation](https://www.home-assistant.io/integrations/http/#reverse-proxie).
+
+### Access
+
+You should add the following to you `/etc/hosts` file to access your cluster - with the IP address being the location of your cluster.
+
+```
+127.0.0.1 homeassistant filebrowser waffle
 ```
 
-### Enabling Your App
+Alternatively, you could add `address=/crepe/filebrowser/homeassistant/your_cluster_ip` (where your_cluster_ip is the IP of your kubernetes cluster) to your `dnsmasq` config for network-wide DNS.
 
-By default your application will be deployment on three hosts:
+You can then access the services from your web browser:
 
-* `homeassistant` - this will be the homeassistant installation
-* `filebrowser` - the will be filebrowser installation
-* `avalanche` - main ingress route for applications. [Flame](https://github.com/pawelmalak/flame) is used on the root directory, and subdirectories can run other applications - for example, avalanche/transmission/ for [transmission](https://github.com/linuxserver/docker-transmission)
+- [http://waffle/](http://waffle/) - main route and ingress for most services
+- [http://filebrowser/](http://filebrowser/) - [filebrowser](https://github.com/filebrowser/filebrowser) service
+- [http://homeassistant/](http://homeassistant/) - [homeassistant](https://www.home-assistant.io/) automation service
 
-Add `your_cluster_ip homeassistant filebrowser avalanche` to your /etc/hosts file, or alternatively if your router supports dnsmasq `address=/avalanche/filebrowser/homeassistant/your_cluster_ip`, to then access these services by hostname (where `your_cluster_ip` is the IP address of your kubernetes cluster)
+## Advanced
 
-Navigate to `http://filebrowser` in your web browser to now test the connection to filebrowser.
+### Kustomization
 
-## Advanced Usage
+The file `kustomization.yaml` in your overlay directory shows all the resources that will be provisioned, and any patches that you can apply.
 
-This repository is made to be extended and patched. All custom resources and patches should go in the [/custom](./custom) directory.
+Example patches include HTTPS certificates, public hostnames, and NFS volumes. It is worth to have a look around these files and read the comments to see what you can modify!
 
-Examples of these resources are in the [/custom/examples](./custom/examples) directory, and should be copied and modified if to be used. Patches should be configured accordingly, and go under `patchesStrategicMerge` in your kustomization.yaml file.
+### Customising with Patches
 
-Some examples of using these patches:
+Several patches and extra config is provided in [./overlays/example/](./overlays/example). These instructions assume you have copied this example config into `./overlays/your-cluster`
 
-### Setting up persistent storage for your pods
+#### Basic Auth
 
-By default your pod will not persist data on termination. To do this, it is suggested you add a file in your `kustomization.yaml` underneath `patchStrategicMerge` to define a volume!
+1. Generate a htpasswd secret for use with the middleware. Read the comments for `secret-basic-auth` under `secretGenerator` in `./overlays/your-cluster/kustomization.yaml`
+1. To enable basic auth for a service uncomment the middleware named `basic-auth` in `/overlays/your-cluster/patches/ingress/custom/main.yaml`
+1. Find and enable the patch file in your `kustomization.yaml` file
+1. Reapply your cluster config - `ENV=your-cluster make`
 
-An example of setting up an NFS drive as a persistent can be found in [custom/examples/deployment.nfs-patch.yaml](./custom/examples/deployment.nfs-patch.yaml).
+#### Volumes
 
-Read more about [kubernetes volume storage](https://kubernetes.io/docs/concepts/storage/) for information how to persist your data.
+1. Modify the `./overlays/your-cluster/patches/volumes/` for the pod you want to attach a volume to. An example for an NFS volume is provided by default.
+1. Find and enable the patch file in your `kustomization.yaml` file
+1. Reapply your cluster config - `ENV=your-cluster make`
 
-### Public Access
+#### Internet Access
 
-To set up public access (over the internet) you can add a patch to change the hostnames, and add a custom resource to set up a letsencrypt certificate.
+1. You must have a registered Domain and it must point to the public IP of your kubernetes cluster - accessible over port 80 and 443.
+1. Update the `Host()` rule in the traefik `IngressRoute`. For example, in `./overlays/your-cluster/patches/ingress/custom/homeassistant.yaml` replace the value is `Host()` with `homeassistant.yourwebsite.org` - remember, this value must be enclosed in backticks (\`)
+1. Find and enable the patch files in your `kustomization.yaml` file
+1. Reapply your cluster config - `ENV=your-cluster make`
 
-You can use the [ingress patch](./custom/examples/ingress.public-patch.yaml) to change a hostname and add TLS. The [certification resource](./custom/examples/ingress.certificate.yaml) can be used to provision a certificate with [cert-manager](https://cert-manager.io/).
+#### HTTPS
 
-The [auth middleware](./custom/examples/middleware-auth.yaml) can be used to set up basic auth for your route(s).
+Certificates are provisioned and managed with [Cert-Manager](https://cert-manager.io/)
 
-### System Administration
+1. Enable the `certificate/issuer.yaml` under `resources` in your kustomization.yaml file.
+1. In this file you must provide your email address in `spec.acme.email`. The issuer used by default is [letsencrypt](https://letsencrypt.org/)
+1. Each service has its own certificate in `certificate/<service name>.yaml`. You should change the values in `spec.commonName` and `spec.dnsNames[]` to match your DNS hostnames
+1. Find and enable the resource and patch files in your `kustomization.yaml` file
+1. Reapply your cluster config - `ENV=your-cluster make`
 
-#### Kubernetes Dashboard
+**BONUS #1** - middleware exists, named `secure-headers` for all `IngressRoutes`, enabling certain HTTPS features such as HSTS. This middleware should be enabled in your `./overlays/your-cluster/patches/ingress/custom/<service name>.yaml`.
 
-View the [official documentation](https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/) for setting up a kubernetes dashboard to manage your cluster.
-
-#### Traefik Dashboard
-
-Use the following command to port forward the traefik dashboard to your localhost:
-
-```bash
-kubectl -n kube-system \
-  port-forward $( \
-    kubectl -n kube-system \
-    get pods \
-    --selector 'app.kubernetes.io/name=traefik' \
-    --output=name \
-      | sed -e 's~pod/~~' \
-      | head -n 1 \
-  ) \
-  9000:9000
-```
-
-This command will port-forward over 9000 the correct traefik pod at [http://localhost:9000/dashboard/](http://localhost:9000/dashboard/)
-
+**BONUS #2** - you can force traefik to redirect port 80 requests to 443. See `helmCharts[name=traefik].valuesInline.additionalArguments`
 

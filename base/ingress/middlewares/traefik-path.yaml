@@ -1,0 +1,13 @@
+---
+
+# MIDDLEWARE
+# Strip out prefix for traefik-dashboard ingress
+apiVersion: 'traefik.io/v1alpha1'
+kind: 'Middleware'
+metadata:
+  name: 'traefik-path'
+spec:
+  stripPrefix:
+    prefixes:
+      - '/traefik'
+
