@@ -10,7 +10,6 @@ Services includes by default include [Home Assistant](https://www.home-assistant
 
 <!-- vim-md-toc format=bullets max_level=4 ignore=^Contents$ -->
 * [Quick Start](#quick-start)
-  * [Configuration](#configuration)
   * [Access](#access)
 * [Advanced](#advanced)
   * [Kustomization](#kustomization)
@@ -32,12 +31,6 @@ Copy the `overlays/example` directory with a name of your choosing, for example 
 Install all dependencies with `kubectl kustomize --enable-helm ./helm | kubectl apply -f -` (or `make dependencies`). If are using [k3s](https://k3s.io) as your kubernetes distribution, make sure you installed it with `--disable=traefik`, so we can manage traefik here.
 
 Deploy your cluster with `kubectl kustomize overlays/your-cluster | kubectl apply -f -` (or `ENV=your-cluster make`)
-
-### Configuration
-
-When initialising it is recommended that you use some default configuration provided in [./assets](./assets) by running `./setup.sh defaults waffle` - where `waffle` is the name of your cluster.
-
-This default configuration set some basic settings on containers, such as to enable ingress routes.
 
 ### Access
 
