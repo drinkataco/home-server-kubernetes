@@ -24,6 +24,11 @@ spec:
         - name: 'jackett'
           port: 9117
     - kind: 'Rule'
+      match: Host(`waffle`) && PathPrefix(`/bazarr`)
+      services:
+        - name: 'bazarr'
+          port: 6767
+    - kind: 'Rule'
       match: Host(`waffle`) && PathPrefix(`/radarr`)
       services:
         - name: 'radarr'

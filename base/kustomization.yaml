@@ -8,6 +8,7 @@ configurations:
 
 resources:
   # Deployments and Services
+  - './deployments/bazarr.yaml'
   - './deployments/filebrowser.yaml'
   - './deployments/flame.yaml'
   - './deployments/homeassistant.yaml'

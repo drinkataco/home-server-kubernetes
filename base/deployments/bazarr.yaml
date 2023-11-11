@@ -1,0 +1,62 @@
+---
+
+apiVersion: 'apps/v1'
+kind: 'Deployment'
+metadata:
+  name: 'bazarr'
+  labels:
+    app: 'bazarr'
+spec:
+  selector:
+    matchLabels:
+      app: 'bazarr'
+  template:
+    metadata:
+      labels:
+        app: 'bazarr'
+    spec:
+      containers:
+        - name: 'bazarr'
+          image: 'linuxserver/bazarr'
+          imagePullPolicy: 'Always'
+          ports:
+            - containerPort: 6767
+              protocol: 'TCP'
+          volumeMounts:
+            - mountPath: '/config'
+              name: 'bazarr-config'
+            - mountPath: '/tv'
+              name: 'bazarr-tv'
+            - mountPath: '/movies'
+              name: 'bazarr-film'
+          # livenessProbe:
+          #   httpGet:
+          #     port: 6767
+          #     path: '/bazarr'
+          #   failureThreshold: 3
+          #   initialDelaySeconds: 30
+          #   periodSeconds: 10
+          #   terminationGracePeriodSeconds: 30
+      volumes:
+        - name: 'bazarr-config'
+          emptyDir: {}
+        - name: 'bazarr-film'
+          emptyDir: {}
+        - name: 'bazarr-tv'
+          emptyDir: {}
+
+---
+
+apiVersion: 'v1'
+kind: 'Service'
+metadata:
+  name: 'bazarr'
+  labels:
+    app: 'bazarr'
+spec:
+  ports:
+    - port: 6767
+      protocol: 'TCP'
+      targetPort: 6767
+  selector:
+    app: 'bazarr'
